@@ -9,7 +9,7 @@
 <body>
     <header>
         <h1>Library</h1>
-        <button id="btn-add">Add Book</button>
+        <button id="btn-add" command="show-modal" commandfor="dialog-books">Add Book</button>
     </header>
     <main id="library">
         
@@ -17,6 +17,28 @@
     <footer>
         <p>Build by <a href="https://github.com/pedro-sobral-09" target="_blank">Pedro Sobral</a></p>
     </footer>
+    <dialog id="dialog-books">
+        <form id="form-dialog">
+            <label for="input-title" id="label-title">Title: </label>
+            <input type="text" required id="input-title">
+
+            <label for="input-author" id="label-author">Author: </label>
+            <input type="text" required id="input-author">
+
+            <label for="input-pages" id="label-pages">Pages: </label>
+            <input type="number" required id="input-pages">
+
+            <label for="input-status" id="label-status">Status: </label>
+            <select id="input-status" required>
+                <option value="" disabled selected>Select</option>
+                <option value="To read">To read</option>
+                <option value="Reading">Reading</option>
+                <option value="Read">Read</option>
+            </select>
+            <button id="btn-close">Close</button>
+            <button id="btn-confirm" type="submit">Confirm</button>
+        </form>
+    </dialog>
     <script src="script.js"></script>
 </body>
 </html>

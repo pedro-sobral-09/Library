@@ -71,7 +71,7 @@ header #btn-add:hover {
     display: flex;
     flex-wrap: wrap;
     gap: 2em;
-    justify-content: center;
+    justify-content: space-evenly;
     overflow-y: auto;
 }
 
@@ -124,6 +124,83 @@ header #btn-add:hover {
     cursor: pointer;
     background-color: var(--color-btn);
     color: var(--color-text);
+}
+
+dialog {
+    margin: auto;
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    border: var(--border-default);
+    border-radius: var(--border-radius-default);
+}
+
+dialog #form-dialog {
+    padding: 1em;
+    display: grid;
+    gap: 0.6em;
+    grid-template-columns: 0.5fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+    grid-template-areas: "label-title input-title"
+                         "label-author input-author"
+                         "label-pages input-pages"
+                         "label-status input-status"
+                         "close confirm";
+}
+
+dialog label {
+    font-size: 1.5em;
+}
+
+dialog input {
+    font-size: 1.25em;
+}
+
+dialog #form-dialog #label-title {
+    grid-area: label-title;
+}
+
+dialog #form-dialog #input-title {
+    grid-area: input-title;
+}
+
+dialog #form-dialog #label-author {
+    grid-area: label-author;
+}
+
+dialog #form-dialog #input-author {
+    grid-area: input-author;
+}
+
+dialog #form-dialog #label-pages {
+    grid-area: label-pages;
+}
+
+dialog #form-dialog #input-pages {
+    grid-area: input-pages;
+}
+
+dialog #form-dialog #label-status {
+    grid-area: label-status;
+}
+
+dialog #form-dialog #input-status {
+    grid-area: input-status;
+}
+
+dialog #form-dialog #btn-close, dialog #form-dialog #btn-confirm {
+    padding: 0.5em;
+    font-family: var(--font-default);
+    border: var(--border-default);
+    border-radius: var(--border-radius-default);
+    font-size: 1em;
+    cursor: pointer;
+    background-color: var(--color-btn);
+    color: var(--color-text);
+}
+
+dialog::backdrop {
+    background-color: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(4px);
 }
 
 footer {
