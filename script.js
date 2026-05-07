@@ -1,6 +1,17 @@
 const library = [];
 
+// variables of screen
 let libraryNode = document.querySelector("#library");
+const dialog = document.querySelector("#dialog-books");
+const form = document.querySelector("#form-dialog");
+
+// control variable
+let editingBookID = null;
+
+// variables of buttons
+const btnAdd = document.querySelector("#btn-add");
+const btnClose = document.querySelector("#btn-close");
+const btnConfirm = document.querySelector("#btn-confirm");
 
 function Book (title, author, pages, status){
     let id = crypto.randomUUID();
@@ -33,16 +44,61 @@ function displayBooks(){
                             <p class="author">By ${book.author}</p>
                             <p class="pages">Pages: ${book.pages}</p>
                             <p class="status">Status: ${book.status}</p>
-                            <button id="btn-edit">Edit</button>
-                            <button id="btn-delete">Delete</button>
+                            <button class="btn-edit">Edit</button>
+                            <button class="btn-delete">Delete</button>
                         </div>`
     }
 
     libraryNode.innerHTML = libraryUI;
 }
 
+function setupDialogEvent(){
+    btnAdd.addEventListener("click", () => {
+        editingBookID = null;
+
+        dialog.showModal();
+    });
+}
+
+function getInputs(){
+    const title = document.querySelector("#input-title").value;
+    const author = document.querySelector("#input-author").value;
+    const pages = document.querySelector("#input-pages").value;
+    const status = document.querySelector("#input-status").value;
+    return [title, author, pages, status];
+}
+
+function handleConfirmClick(){
+    const [title, author, pages, status] = getInputs();
+    
+    // check if new book or editing
+    if (editingBookID == null){
+        addBookToLibrary(new Book(title, author, pages, status));
+        displayBooks();
+        btnClose.click();
+    }
+}
+
+function setupFormEvents(){
+    btnClose.addEventListener("click", () => {
+        form.reset();
+        dialog.close();
+    });
+    
+    form.addEventListener("submit", (event) => {
+        event.preventDefault();
+        handleConfirmClick();
+    });
+}
+
+function setupButtons(){
+    setupDialogEvent(); // make event for add button
+    setupFormEvents(); // make events for confirm and close buttons
+}
+
 function main(){
     initialBooks();
+    setupButtons();
 }
 
 main();

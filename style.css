@@ -115,7 +115,7 @@ header #btn-add:hover {
     grid-area: status;
 }
 
-.book #btn-edit, .book #btn-delete {
+.book .btn-edit, .book .btn-delete {
     padding: 0.5em;
     font-family: var(--font-default);
     border: var(--border-default);
@@ -124,6 +124,11 @@ header #btn-add:hover {
     cursor: pointer;
     background-color: var(--color-btn);
     color: var(--color-text);
+}
+
+.book .btn-edit:active, .book .btn-delete:active  {
+    background-color: var(--color-btn-hover);
+    color: var(--color-text-2);
 }
 
 dialog {
@@ -196,6 +201,11 @@ dialog #form-dialog #btn-close, dialog #form-dialog #btn-confirm {
     cursor: pointer;
     background-color: var(--color-btn);
     color: var(--color-text);
+}
+
+dialog #form-dialog #btn-close:active, dialog #form-dialog #btn-confirm:active {
+    background-color: var(--color-btn-hover);
+    color: var(--color-text-2);
 }
 
 dialog::backdrop {
