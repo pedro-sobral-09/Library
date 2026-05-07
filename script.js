@@ -77,6 +77,9 @@ function editingTheBook() {
     bookEdit.author = author.value;
     bookEdit.pages = pages.value;
     bookEdit.status = status.value;
+
+    // reset editing Book
+    editingBookID = null;
 }
 
 function handleConfirmClick(){
@@ -135,12 +138,27 @@ function handleEditClick(clickedButton){
     dialog.showModal();
 }
 
+function removeBookOfLibrary(id){
+    const bookIndex = library.findIndex((book) => book.id === id);
+    
+    library.splice(bookIndex, 1);
+}
+
+function handleDeleteClick(clickedButton){
+    removeBookOfLibrary(getBookIDFromButton(clickedButton));
+    displayBooks();
+}
+
 function setupLibraryEvents(){
     libraryNode.addEventListener("click", (event)=> {
         const clickedButton = event.target;
 
         if (clickedButton.classList.contains("btn-edit")) {
             handleEditClick(clickedButton);
+        }
+
+        if (clickedButton.classList.contains("btn-delete")) {
+            handleDeleteClick(clickedButton);
         }
     });
 }
