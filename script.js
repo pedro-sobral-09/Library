@@ -61,11 +61,22 @@ function setupDialogEvent(){
 }
 
 function getInputs(){
-    const title = document.querySelector("#input-title").value;
-    const author = document.querySelector("#input-author").value;
-    const pages = document.querySelector("#input-pages").value;
-    const status = document.querySelector("#input-status").value;
+    const title = document.querySelector("#input-title");
+    const author = document.querySelector("#input-author");
+    const pages = document.querySelector("#input-pages");
+    const status = document.querySelector("#input-status");
     return [title, author, pages, status];
+}
+
+function editingTheBook() {
+    // editing the book
+    const bookEdit = findBookByID(editingBookID);
+    const [title, author, pages, status] = getInputs();
+
+    bookEdit.title = title.value;
+    bookEdit.author = author.value;
+    bookEdit.pages = pages.value;
+    bookEdit.status = status.value;
 }
 
 function handleConfirmClick(){
@@ -73,7 +84,11 @@ function handleConfirmClick(){
     
     // check if new book or editing
     if (editingBookID == null){
-        addBookToLibrary(new Book(title, author, pages, status));
+        addBookToLibrary(new Book(title.value, author.value, pages.value, status.value));
+        displayBooks();
+        btnClose.click();
+    } else {
+        editingTheBook();
         displayBooks();
         btnClose.click();
     }
@@ -91,9 +106,49 @@ function setupFormEvents(){
     });
 }
 
+function getBookIDFromButton(clickedButton){
+    const bookCard = clickedButton.closest(".book");
+    return bookCard.dataset.id;
+}
+
+function findBookByID(id){
+    for (let book of library){
+        if (book.id == id){
+            return book;
+        }
+    }
+}
+
+function updateForm(book){
+    const [title, author, pages, status] = getInputs();
+    
+    title.value = book.title;
+    author.value = book.author;
+    pages.value = book.pages;
+    status.value = book.status;
+}
+
+function handleEditClick(clickedButton){
+    editingBookID = getBookIDFromButton(clickedButton);
+    const bookEdit = findBookByID(editingBookID);
+    updateForm(bookEdit);
+    dialog.showModal();
+}
+
+function setupLibraryEvents(){
+    libraryNode.addEventListener("click", (event)=> {
+        const clickedButton = event.target;
+
+        if (clickedButton.classList.contains("btn-edit")) {
+            handleEditClick(clickedButton);
+        }
+    });
+}
+
 function setupButtons(){
     setupDialogEvent(); // make event for add button
     setupFormEvents(); // make events for confirm and close buttons
+    setupLibraryEvents(); // make events for edit and delete
 }
 
 function main(){
