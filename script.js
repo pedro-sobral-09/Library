@@ -1,5 +1,7 @@
 const library = [];
 
+let libraryNode = document.querySelector("#library");
+
 function Book (title, author, pages, status){
     let id = crypto.randomUUID();
     return { title, author, pages, status, id };
@@ -19,10 +21,28 @@ function initialBooks() {
     addBookToLibrary(new Book("Rich Dad Poor Dad", "Robert Kiyosaki", 336, "Read"));
     addBookToLibrary(new Book("The Psychology of Money", "Morgan Housel", 256, "To read"));
     addBookToLibrary(new Book("Dune", "Frank Herbert", 688, "Reading"));
+    displayBooks();
+}
+
+function displayBooks(){
+    let libraryUI = ``;
+
+    for (let book of library){
+        libraryUI += `<div class="book" data-id="${book.id}">
+                            <h2 class="title">${book.title}</h2>
+                            <p class="author">By ${book.author}</p>
+                            <p class="pages">Pages: ${book.pages}</p>
+                            <p class="status">Status: ${book.status}</p>
+                            <button id="btn-edit">Edit</button>
+                            <button id="btn-delete">Delete</button>
+                        </div>`
+    }
+
+    libraryNode.innerHTML = libraryUI;
 }
 
 function main(){
-    initialBooks();  
+    initialBooks();
 }
 
 main();

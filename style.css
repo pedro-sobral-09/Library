@@ -7,8 +7,8 @@
 }
 
 :root {
-    --color-header-bg: #9C2113;
-    --color-header-bg-2: #73190f;
+    --color-special-bg: #9C2113;
+    --color-special-bg-2: #73190f;
     --color-text-2: #000000;
     --color-text: #fff;
     --color-bg: #099078;
@@ -28,17 +28,18 @@ body {
     background-color: var(--color-bg);
     font-family: var(--font-default);
     font-size: 16px;
+    color: var(--color-text);
 }
 
 header {
     height: 14vh;
-    background: linear-gradient(var(--color-header-bg), var(--color-header-bg-2));
+    background: linear-gradient(var(--color-special-bg), var(--color-special-bg-2));
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     gap: 0.5em;
-    box-shadow: 1px 0px 3px #000;
+    box-shadow: 2px 0px 5px #000;
 }
 
 header h1 {
@@ -56,7 +57,6 @@ header #btn-add {
     cursor: pointer;
     background-color: var(--color-btn);
     color: var(--color-text);
-
 }
 
 header #btn-add:hover {
@@ -67,15 +67,73 @@ header #btn-add:hover {
 
 #library {
     height: 82vh;
+    padding: 2em;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2em;
+    justify-content: center;
+    overflow-y: auto;
+}
+
+.book {
+    height: 15em;
+    width: 15em;
+    padding: 1em;
+    background: linear-gradient(to right, var(--color-special-bg), var(--color-special-bg-2));
+    color: var(--color-text);
+    border: var(--border-default);
+    border-radius: var(--border-radius-default);
+    font-size: 1.10em;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr 2fr;
+    gap: 0.6em;
+    grid-template-areas: "title title"
+               "author author"
+               "pages pages"
+               "status status"
+               "edit delete";
+    
+}
+
+.book .title {
+    font-family: var(--font-title);
+    text-align: center;
+    font-size: 1.5em;
+    grid-area: title;
+}
+
+.book .author {
+    grid-area: author;
+}
+
+.book .pages {
+    grid-area: pages;
+}
+
+.book .status {
+    grid-area: status;
+}
+
+.book #btn-edit, .book #btn-delete {
+    padding: 0.5em;
+    font-family: var(--font-default);
+    border: var(--border-default);
+    border-radius: var(--border-radius-default);
+    font-size: 1em;
+    cursor: pointer;
+    background-color: var(--color-btn);
+    color: var(--color-text);
 }
 
 footer {
     height: 4vh;
-    background: linear-gradient(var(--color-header-bg), var(--color-header-bg-2));
+    background: linear-gradient(var(--color-special-bg), var(--color-special-bg-2));
     color: var(--color-text);
     display: flex;
     justify-content: center;
     align-items: center;
+    box-shadow: -2px 0px 5px #000;
 }
 
 footer a {
