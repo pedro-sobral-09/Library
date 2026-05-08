@@ -132,6 +132,10 @@ header #btn-add:active {
     background-color: var(--color-btn-hover-2);
 }
 
+.book .status:disabled {
+    background-color: var(--color-btn-hover-2);
+}
+
 .book .btn-edit, .book .btn-delete {
     padding: 0.5em;
     font-family: var(--font-default);

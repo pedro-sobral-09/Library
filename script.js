@@ -39,7 +39,17 @@ function displayBooks(){
     let libraryUI = ``;
 
     for (let book of library){
-        libraryUI += `<div class="book" data-id="${book.id}">
+        if (book.status == "Read"){
+            libraryUI += `<div class="book" data-id="${book.id}">
+                            <h2 class="title">${book.title}</h2>
+                            <p class="author">By ${book.author}</p>
+                            <p class="pages">Pages: ${book.pages}</p>
+                            <button class="status" disabled>${book.status}</button>
+                            <button class="btn-edit">Edit</button>
+                            <button class="btn-delete">Delete</button>
+                        </div>`
+        } else {
+            libraryUI += `<div class="book" data-id="${book.id}">
                             <h2 class="title">${book.title}</h2>
                             <p class="author">By ${book.author}</p>
                             <p class="pages">Pages: ${book.pages}</p>
@@ -47,6 +57,7 @@ function displayBooks(){
                             <button class="btn-edit">Edit</button>
                             <button class="btn-delete">Delete</button>
                         </div>`
+        }
     }
 
     libraryNode.innerHTML = libraryUI;
@@ -154,8 +165,6 @@ function updateStatus(book){
         book.status = "Reading";
     } else if (book.status === "Reading"){
         book.status = "Read";
-    } else if (book.status === "Read"){
-        book.status = "To read";
     }
 }
 
