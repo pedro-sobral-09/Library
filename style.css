@@ -13,7 +13,9 @@
     --color-text: #fff;
     --color-bg: #099078;
     --color-btn: #014B43;
+    --color-btn-2: #808080;
     --color-btn-hover: #fff;
+    --color-btn-hover-2: #d3d3d3;
     --color-footer: #000;
 
     --font-default: "Oswald", arial;
@@ -59,7 +61,7 @@ header #btn-add {
     color: var(--color-text);
 }
 
-header #btn-add:hover {
+header #btn-add:active {
     color: var(--color-text-2);
     background-color: var(--color-btn-hover);
 }
@@ -76,8 +78,8 @@ header #btn-add:hover {
 }
 
 .book {
-    height: 15em;
-    width: 15em;
+    height: 16em;
+    width: 16em;
     padding: 1em;
     background: linear-gradient(to right, var(--color-special-bg), var(--color-special-bg-2));
     color: var(--color-text);
@@ -113,6 +115,21 @@ header #btn-add:hover {
 
 .book .status {
     grid-area: status;
+    align-items: center;
+    padding: 0.25em;
+    margin-left: 10%;
+    width: 80%;
+    font-family: var(--font-default);
+    border: var(--border-default);
+    border-radius: var(--border-radius-default);
+    font-size: 1.2em;
+    cursor: pointer;
+    background-color: var(--color-btn-2);
+    color: var(--color-text-2);
+}
+
+.book .status:active {
+    background-color: var(--color-btn-hover-2);
 }
 
 .book .btn-edit, .book .btn-delete {

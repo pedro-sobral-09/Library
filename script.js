@@ -43,7 +43,7 @@ function displayBooks(){
                             <h2 class="title">${book.title}</h2>
                             <p class="author">By ${book.author}</p>
                             <p class="pages">Pages: ${book.pages}</p>
-                            <p class="status">Status: ${book.status}</p>
+                            <button class="status">${book.status}</button>
                             <button class="btn-edit">Edit</button>
                             <button class="btn-delete">Delete</button>
                         </div>`
@@ -149,6 +149,22 @@ function handleDeleteClick(clickedButton){
     displayBooks();
 }
 
+function updateStatus(book){
+    if (book.status === "To read"){
+        book.status = "Reading";
+    } else if (book.status === "Reading"){
+        book.status = "Read";
+    } else if (book.status === "Read"){
+        book.status = "To read";
+    }
+}
+
+function handleStatusClick(clickedButton){
+    const bookEdit = findBookByID(getBookIDFromButton(clickedButton));
+    updateStatus(bookEdit);
+    displayBooks();
+}
+
 function setupLibraryEvents(){
     libraryNode.addEventListener("click", (event)=> {
         const clickedButton = event.target;
@@ -160,13 +176,17 @@ function setupLibraryEvents(){
         if (clickedButton.classList.contains("btn-delete")) {
             handleDeleteClick(clickedButton);
         }
+
+        if (clickedButton.classList.contains("status")) {
+            handleStatusClick(clickedButton);
+        }
     });
 }
 
 function setupButtons(){
     setupDialogEvent(); // make event for add button
     setupFormEvents(); // make events for confirm and close buttons
-    setupLibraryEvents(); // make events for edit and delete
+    setupLibraryEvents(); // make events for edit, delete and status buttons
 }
 
 function main(){
