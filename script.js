@@ -1,4 +1,66 @@
-const library = [];
+class Library {
+    constructor() {
+        this.books = [];
+    }
+
+    addBook(book) {
+        this.books.push(book);
+    }
+
+    removeBook(id){
+        this.books = this.books.filter((book) => book.id !== id);
+    }
+
+    findBook(id) {
+        for (let book of library) {
+            if (book.id == id) {
+                return book;
+            }
+        }
+    }
+}
+
+class Book {
+    constructor(title, author, pages, status) {
+        this.title = title;
+        this.author = author;
+        this.pages = pages;
+        this.status = status;
+        this.id = crypto.randomUUID();
+    }
+
+    updateBook(title, author, pages, status) {
+        this.title = title;
+        this.author = author;
+        this.pages = pages;
+        this.status = status;
+    }
+
+    updateStatus() {
+        if (this.status === "To read"){
+            this.status = "Reading";
+        } else if (this.status === "Reading"){
+            this.status = "Read";
+        }
+    }
+
+    get isCompleted(){
+        return this.status === "Read";
+    }
+
+    createHTML(){
+        return `<div class="book" data-id="${this.id}">
+                    <h2 class="title">${this.title}</h2>
+                    <p class="author">By ${this.author}</p>
+                    <p class="pages">Pages: ${this.pages}</p>
+                    <button class="status" ${this.isCompleted ? "disabled" : ""}>${this.status}</button>
+                    <button class="btn-edit">Edit</button>
+                    <button class="btn-delete">Delete</button>
+                </div>`;
+    }
+}
+
+const library = new Library();
 
 // variables of screen
 let libraryNode = document.querySelector("#library");
@@ -13,51 +75,24 @@ const btnAdd = document.querySelector("#btn-add");
 const btnClose = document.querySelector("#btn-close");
 const btnConfirm = document.querySelector("#btn-confirm");
 
-function Book (title, author, pages, status){
-    let id = crypto.randomUUID();
-    return { title, author, pages, status, id };
-}
-
-function addBookToLibrary(book){
-    library.push(book);
-}
-
 function initialBooks() {
-    addBookToLibrary(new Book("Atomic Habits", "James Clear", 320, "Read"));
-    addBookToLibrary(new Book("The Lean Startup", "Eric Ries", 336, "To read"));
-    addBookToLibrary(new Book("Deep Work", "Cal Newport", 304, "Reading"));
-    addBookToLibrary(new Book("Clean Code", "Robert C. Martin", 464, "To read"));
-    addBookToLibrary(new Book("The Pragmatic Programmer", "Andrew Hunt and David Thomas", 352, "To read"));
-    addBookToLibrary(new Book("Eloquent JavaScript", "Marijn Haverbeke", 472, "Reading"));
-    addBookToLibrary(new Book("Rich Dad Poor Dad", "Robert Kiyosaki", 336, "Read"));
-    addBookToLibrary(new Book("The Psychology of Money", "Morgan Housel", 256, "To read"));
-    addBookToLibrary(new Book("Dune", "Frank Herbert", 688, "Reading"));
+    library.addBook(new Book("Atomic Habits", "James Clear", 320, "Read"));
+    library.addBook(new Book("The Lean Startup", "Eric Ries", 336, "To read"));
+    library.addBook(new Book("Deep Work", "Cal Newport", 304, "Reading"));
+    library.addBook(new Book("Clean Code", "Robert C. Martin", 464, "To read"));
+    library.addBook(new Book("The Pragmatic Programmer", "Andrew Hunt and David Thomas", 352, "To read"));
+    library.addBook(new Book("Eloquent JavaScript", "Marijn Haverbeke", 472, "Reading"));
+    library.addBook(new Book("Rich Dad Poor Dad", "Robert Kiyosaki", 336, "Read"));
+    library.addBook(new Book("The Psychology of Money", "Morgan Housel", 256, "To read"));
+    library.addBook(new Book("Dune", "Frank Herbert", 688, "Reading"));
     displayBooks();
 }
 
 function displayBooks(){
     let libraryUI = ``;
 
-    for (let book of library){
-        if (book.status == "Read"){
-            libraryUI += `<div class="book" data-id="${book.id}">
-                            <h2 class="title">${book.title}</h2>
-                            <p class="author">By ${book.author}</p>
-                            <p class="pages">Pages: ${book.pages}</p>
-                            <button class="status" disabled>${book.status}</button>
-                            <button class="btn-edit">Edit</button>
-                            <button class="btn-delete">Delete</button>
-                        </div>`
-        } else {
-            libraryUI += `<div class="book" data-id="${book.id}">
-                            <h2 class="title">${book.title}</h2>
-                            <p class="author">By ${book.author}</p>
-                            <p class="pages">Pages: ${book.pages}</p>
-                            <button class="status">${book.status}</button>
-                            <button class="btn-edit">Edit</button>
-                            <button class="btn-delete">Delete</button>
-                        </div>`
-        }
+    for (let book of library.books){
+        libraryUI += book.createHTML();
     }
 
     libraryNode.innerHTML = libraryUI;
@@ -65,6 +100,7 @@ function displayBooks(){
 
 function setupDialogEvent(){
     btnAdd.addEventListener("click", () => {
+        // Reset editingBookID to null to indicate we're adding a new book, not editing an existing one
         editingBookID = null;
 
         dialog.showModal();
@@ -81,24 +117,21 @@ function getInputs(){
 
 function editingTheBook() {
     // editing the book
-    const bookEdit = findBookByID(editingBookID);
+    const bookEdit = library.findBook(editingBookID);
     const [title, author, pages, status] = getInputs();
 
-    bookEdit.title = title.value;
-    bookEdit.author = author.value;
-    bookEdit.pages = pages.value;
-    bookEdit.status = status.value;
+    bookEdit.updateBook(title.value, author.value, pages.value, status.value);
 
-    // reset editing Book
+    // reset editingBookID
     editingBookID = null;
 }
 
 function handleConfirmClick(){
     const [title, author, pages, status] = getInputs();
     
-    // check if new book or editing
+    // check if new book or editing | if it is a new book, editingBookID will be null
     if (editingBookID == null){
-        addBookToLibrary(new Book(title.value, author.value, pages.value, status.value));
+        library.addBook(new Book(title.value, author.value, pages.value, status.value));
         displayBooks();
         btnClose.click();
     } else {
@@ -113,8 +146,10 @@ function setupFormEvents(){
         form.reset();
         dialog.close();
     });
-    
+
+    // confirm button event
     form.addEventListener("submit", (event) => {
+        // does not let the form submit
         event.preventDefault();
         handleConfirmClick();
     });
@@ -123,14 +158,6 @@ function setupFormEvents(){
 function getBookIDFromButton(clickedButton){
     const bookCard = clickedButton.closest(".book");
     return bookCard.dataset.id;
-}
-
-function findBookByID(id){
-    for (let book of library){
-        if (book.id == id){
-            return book;
-        }
-    }
 }
 
 function updateForm(book){
@@ -144,33 +171,19 @@ function updateForm(book){
 
 function handleEditClick(clickedButton){
     editingBookID = getBookIDFromButton(clickedButton);
-    const bookEdit = findBookByID(editingBookID);
+    const bookEdit = library.findBook(editingBookID);
     updateForm(bookEdit);
     dialog.showModal();
 }
 
-function removeBookOfLibrary(id){
-    const bookIndex = library.findIndex((book) => book.id === id);
-    
-    library.splice(bookIndex, 1);
-}
-
 function handleDeleteClick(clickedButton){
-    removeBookOfLibrary(getBookIDFromButton(clickedButton));
+    library.removeBook(getBookIDFromButton(clickedButton));
     displayBooks();
 }
 
-function updateStatus(book){
-    if (book.status === "To read"){
-        book.status = "Reading";
-    } else if (book.status === "Reading"){
-        book.status = "Read";
-    }
-}
-
 function handleStatusClick(clickedButton){
-    const bookEdit = findBookByID(getBookIDFromButton(clickedButton));
-    updateStatus(bookEdit);
+    const bookEdit = library.findBook(getBookIDFromButton(clickedButton));
+    bookEdit.updateStatus();
     displayBooks();
 }
 
