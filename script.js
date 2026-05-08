@@ -12,7 +12,7 @@ class Library {
     }
 
     findBook(id) {
-        for (let book of library) {
+        for (let book of library.books) {
             if (book.id == id) {
                 return book;
             }
